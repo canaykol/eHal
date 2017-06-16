@@ -1,0 +1,135 @@
+﻿@model eHal.Models.Seller
+@using eHal.Service;
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Üretici Detayları</h2>
+
+<div class="ui stackable grid">
+    <div class="row">
+        <div class="four wide column">
+
+            <div class="ui link cards">
+                <div class="card">
+                    <div class="image">
+                        <img src="~/Content/default-avatar.jpg">
+                    </div>
+                    <div class="content">
+                        <div class="header">@Html.DisplayFor(model => model.Name)</div>
+                        <div class="meta">
+                            <a>Buraya da bir şeyler yazılabilir</a>
+                        </div>
+                        <div class="description">
+                            @if (!String.IsNullOrEmpty(Model.Telefon))
+                                {
+                                <p><b>Telefon:</b> @Html.DisplayFor(model => model.Telefon)</p>
+                                }
+                            @if (!String.IsNullOrEmpty(Model.acikAdres))
+                                {
+                                <p><b>Adres:</b> @Html.DisplayFor(model => model.acikAdres)</p>
+                                }
+                            @if (!String.IsNullOrEmpty(Model.WebAdress))
+                                {
+                                <p><b>İnternet adresi:</b> @Html.DisplayFor(model => model.WebAdress)</p>
+                                }
+
+                        </div>
+                    </div>
+                    <div class="extra content">
+                        <span class="right floated">
+                            Joined @ViewService.timeDifference(Model.joinDate) ago.
+                        </span>
+                        <span>
+                            <i class="user icon"></i>
+                            @Model.ilanlar.Count() adet ilanı var.
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="twelve wide column">
+            <div class="ui raised segment">
+                <h3>Bu Kullanıcının Son İlanları</h3>
+                <div class="ui divider"></div>
+                <div class="ui divided items">
+
+                    @foreach (var item in Model.ilanlar.OrderBy(c => c.ilanTarihi).Take(3))
+                    {
+                        <div class="item">
+                            <div class="ui circular segment" id="fiyat">
+                                <h2 class="ui header">
+                                    @Html.DisplayFor(modelItem => item.birimFiyat)
+                                    <div class="sub header">kilosu</div>
+                                </h2>
+                            </div>
+                            <div class="content">
+                                <a class="header" href="/Listings/Details/@item.Id">@Html.DisplayFor(modelItem => item.pType.ProductTypeName)</a>
+                                <div class="meta">
+                                    <span class="cinema"> <b>Miktar: </b> @Html.DisplayFor(modelItem => item.Miktar) ton  <b>Hasat:</b> @Html.DisplayFor(modelItem => item.hasatZamani.Tag) </span>
+                                </div>
+                                <div class="description">
+                                    <p>Minimum @Html.DisplayFor(modelItem => item.minimumOrder) ton, @Html.DisplayFor(modelItem => item.Aciklama)</p>
+                                </div>
+                                <div class="extra">
+
+                                    <img class="ui avatar image" src="~/Content/default-avatar.jpg">
+                                    <a href="/Sellers/Details/@item.ilanSahibi.Id">
+                                        <span>@Html.DisplayFor(modelItem => item.ilanSahibi.Name)</span>
+
+                                    </a>
+
+
+                                    @if (item.birinciKalite)
+                                    {
+                                        <div class="ui label"><i class="globe icon"></i> Birinci Kalite</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="ui label"><i class="globe icon"></i> İkinci Kalite</div>
+                                    }
+                                    @if (item.placedInBoxed)
+                                    {
+                                        <div class="ui label"><i class="globe icon"></i>Paketlenmiş</div>
+                                    }
+                                    @if (item.sera)
+                                    {
+                                        <div class="ui label"><i class="globe icon"></i>Sera</div>
+                                    }
+                                    @if (item.organik)
+                                    {
+                                        <div class="ui label"><i class="globe icon"></i>Organik Sertifikalı</div>
+                                    }
+                                    @if (item.iyitarim)
+                                    {
+                                        <div class="ui label"><i class="globe icon"></i>İyi Tarım Uygulamaları</div>
+                                    }
+                                    @ViewService.timeDifference(item.ilanTarihi) önce.
+                                    <a href="/Listings/Details/@item.Id">
+                                        <div class="ui right floated primary button">
+                                            Detaylar
+                                            <i class="right chevron icon"></i>
+                                        </div>
+                                    </a>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    }
+                </div>
+                <a href="/Listings?sellerId=@Model.Id">
+                    <h4 class="ui horizontal divider">
+                        Tüm İlanları
+                    </h4>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

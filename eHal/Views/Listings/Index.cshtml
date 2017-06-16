@@ -1,0 +1,615 @@
+﻿@model eHal.Models.ListingIndexViewModel
+@using eHal.Service;
+
+@{
+    ViewBag.Title = "Index";
+    if (Model.fiyatMin == null) { Model.fiyatMin = 0; } else { Model.fiyatMin = Math.Log(Model.fiyatMin.Value, 4); }
+    if (Model.fiyatMax == null) { Model.fiyatMax = 1; } else { Model.fiyatMax = Math.Log(Model.fiyatMax.Value, 4); }
+    if (Model.miktarMin == null) { Model.miktarMin = 0; } else { Model.miktarMin = Math.Log(Model.miktarMin.Value, 10); }
+    if (Model.miktarMax == null) { Model.miktarMax = 1; } else { Model.miktarMax = Math.Log(Model.miktarMax.Value, 10); }
+    if (Model.minimumOrder == null) { Model.minimumOrder = 0; } else { Model.minimumOrder = Math.Log(Model.minimumOrder.Value, 10); }
+
+}
+
+@Styles.Render("~/Content/rangeSlider")
+@Scripts.Render("~/bundles/rangeSlider")
+
+
+
+
+<div class="ui stackable grid">
+    <div class="row">
+        <div class="four wide column">
+
+
+
+            <div class="ui vertical text menu">
+                <div class="header item">Sort By</div>
+                <a class="item active">
+                    Closest
+                </a>
+                <a class="item">
+                    Most Comments
+                </a>
+                <a class="item">
+                    Most Popular
+                </a>
+            </div>
+
+            <div class="ui  segment">
+                <form method="post" id="filterForm">
+
+                    <button id="yolla" type="button" class="ui left floated button">
+                        <i class="search icon"></i>
+                        Ara!
+                    </button>
+
+                    <button type="button" class="ui right floated small button">Temizle</button>
+                    <br />
+                    <h4 class="ui header">Seçilen Ürünler</h4>
+                    <select name="selectedPT" id="selectedPT" class="ui fluid search dropdown" multiple="">
+                        <option value="">istediğiniz çeşitleri girin</option>
+
+                        @foreach (var item in Model.productTypes.ToList())
+                            {
+                            <option value=@item.Id>@item.ProductTypeName</option>
+                            }
+                    </select>
+
+                    <div class="custom-filter">
+                        <div class="filter-head">
+                            <h4 class="ui header canhed">Fiyat</h4>
+
+                            <button id="fiyatTrigger" class="cantus ui small basic icon button" type="button">
+                                <i class="chevron down icon"></i>
+                            </button>
+
+
+                            @{
+                                    if (Model.fiyatToggle)
+                                    {
+                                <label id="fiyatTriggerLabel" class="meta-state">Filtreleme: Aktif</label>
+                                    }
+                                    else
+                                    {
+                                <label id="fiyatTriggerLabel" class="meta-state">Filtreleme: Kapalı</label>
+                                    }
+
+                            }
+
+
+                        </div>
+
+                        <div id="fiyatFilter" class="filter" @if (!Model.fiyatToggle) { <text> style="display:none" </text>       }>
+                            <input type="text" id="fiyatSlider" name="fiyatSlider" value="" />
+                            <div class="en-az">
+
+                                <b>En az: </b>
+                                <div class="ui mini input">
+                                    <input id="fiyatMinInput" type="text" placeholder="TL" size="3" width="3">
+                                </div>
+                            </div>
+                            <div class="en-fazla">
+                                <b>  En fazla: </b>
+                                <div class="ui mini input">
+                                    <input id="fiyatMaxInput" type="text" placeholder="TL" size="3" width="3">
+                                </div>
+                            </div>
+
+                            <div class="ui divider"></div>
+                        </div>
+                    </div>
+
+                    <div class="custom-filter">
+                        <div class="filter-head">
+                            <h4 class="ui header canhed">Miktar</h4>
+
+                            <button id="miktarTrigger" class="cantus ui small basic icon button" type="button">
+                                <i class="chevron down icon"></i>
+                            </button>
+
+
+                            @{
+                                    if (Model.miktarToggle)
+                                    {
+                                <label id="miktarTriggerLabel" class="meta-state">Filtreleme: Aktif</label>
+                                    }
+                                    else
+                                    {
+                                <label id="miktarTriggerLabel" class="meta-state">Filtreleme: Kapalı</label>
+                                    }
+
+                            }
+
+
+                        </div>
+
+                        <div class="filter" id="miktarFilter" @if (!Model.miktarToggle) { <text> style="display:none" </text>        }>
+                            <input type="text" id="miktarSlider" name="miktarSlider" value="" />
+                            <div class="en-az">
+
+                                <b>En az: </b>
+                                <div class="ui mini input">
+                                    <input id="miktarMinInput" type="text" placeholder="ton" size="4" width="4">
+                                </div>
+                            </div>
+                            <div class="en-fazla">
+                                <b>  En fazla: </b>
+                                <div class="ui mini input">
+                                    <input id="miktarMaxInput" type="text" placeholder="ton" size="4" width="4">
+                                </div>
+                            </div>
+                            <div class="ui divider"></div>
+                        </div>
+                    </div>
+
+
+                    <div class="custom-filter">
+                        <div class="filter-head">
+                            <h4 class="ui header canhed">Minimum Sipariş</h4>
+
+                            <button id="minimumOrderTrigger" class="cantus ui small basic icon button" type="button">
+                                <i class="chevron down icon"></i>
+                            </button>
+
+
+                            @{
+                                    if (Model.minimumOrderToggle)
+                                    {
+                                <label id="minimumOrderTriggerLabel" class="meta-state">Filtreleme: Aktif</label>
+                                    }
+                                    else
+                                    {
+                                <label id="minimumOrderTriggerLabel" class="meta-state">Filtreleme: Kapalı</label>
+                                    }
+
+                            }
+
+
+                        </div>
+
+                        <div class="filter" id="minimumOrderFilter" @if (!Model.minimumOrderToggle) { <text> style="display:none" </text>        }>
+                            <input type="text" id="minimumOrderSlider" name="fiyatSlider" value="" />
+                            <div class="en-az">
+
+                                <b>Minimum sipariş: </b>
+                                <div class="ui mini input">
+                                    <input id="minimumOrderInput" type="text" placeholder="ton" size="4" width="4">
+                                </div>
+                            </div>
+                            <div class="ui divider"></div>
+                        </div>
+                    </div>
+
+
+                    <div class="custom-filter">
+                        <div class="filter-head">
+                            <h4 class="ui header canhed">Hasat Zamanı</h4>
+
+                            <button id="hasatTrigger" class="cantus ui small basic icon button" type="button">
+                                <i class="chevron down icon"></i>
+                            </button>
+
+
+                            @{
+                                    if (Model.hasatToggle)
+                                    {
+                                <label id="hasatTriggerLabel" class="meta-state">Filtreleme: Aktif</label>
+                                    }
+                                    else
+                                    {
+                                <label id="hasatTriggerLabel" class="meta-state">Filtreleme: Kapalı</label>
+                                    }
+
+                            }
+
+
+                        </div>
+
+                        <div class="filter" id="hasatFilter" @if (!Model.hasatToggle) { <text> style="display:none" </text>        }>
+                            <input type="text" id="hasatSlider" name="hasatSlider" value="" />
+                            <div class="ui divider"></div>
+                        </div>
+                    </div>
+
+
+
+
+                    <input type="hidden" id="miktarMin" name="miktarMin" value="" />
+                    <input type="hidden" id="miktarMax" name="miktarMax" value="" />
+                    <input type="hidden" id="fiyatMin" name="fiyatMin" value="" />
+                    <input type="hidden" id="fiyatMax" name="fiyatMax" value="" />
+                    <input type="hidden" id="minimumOrder" name="minimumOrder" value="" />
+                    <input type="hidden" id="hasatMax" name="hasatMax" value="" />
+                    <input type="hidden" id="hasatMin" name="hasatMin" value="" />
+                    <input type="hidden" id="hasatMin" name="hasatMin" value="true" />
+                    <input type="hidden" id="miktarToggle" name="miktarToggle" value="" />
+                    <input type="hidden" id="fiyatToggle" name="fiyatToggle" value="" />
+                    <input type="hidden" id="minimumOrderToggle" name="minimumOrderToggle" value="" />
+                    <input type="hidden" id="hasatToggle" name="hasatToggle" value="" />
+
+
+
+
+
+                </form>
+
+                <div class="ui action mini input">
+                    <input type="text" value="http://ww.short.url/c0opq">
+                    <button class="ui teal right labeled icon mini button">
+                        <i class="copy icon"></i>
+                        Copy
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="twelve wide column">
+
+
+            <div class="ui raised segment">
+                <div class="ui divided items">
+
+                    @foreach (var item in Model.lishingsToShow)
+                        {
+                        <div class="item">
+                            <div class="ui circular segment" id="fiyat">
+                                <h2 class="ui header">
+                                    @Html.DisplayFor(modelItem => item.birimFiyat)
+                                    <div class="sub header">kilosu</div>
+                                </h2>
+                            </div>
+                            <div class="content">
+                                <a class="header" href="/Listings/Details/@item.Id">@Html.DisplayFor(modelItem => item.pType.ProductTypeName)</a>
+                                <div class="meta">
+                                    <span class="cinema"> <b>Miktar: </b> @Html.DisplayFor(modelItem => item.Miktar) ton  <b>Hasat:</b> @Html.DisplayFor(modelItem => item.hasatZamani.Tag) </span>
+                                </div>
+                                <div class="description">
+                                    <p>Minimum @Html.DisplayFor(modelItem => item.minimumOrder) ton, @Html.DisplayFor(modelItem => item.Aciklama)</p>
+                                </div>
+                                <div class="extra">
+
+                                    <img class="ui avatar image" src="~/Content/default-avatar.jpg">
+                                    <a href="/Sellers/Details/@item.ilanSahibi.Id">
+                                        <span>@Html.DisplayFor(modelItem => item.ilanSahibi.Name)</span>
+
+                                    </a>
+
+
+                                    @if (item.birinciKalite)
+                                        {
+                                        <div class="ui label"><i class="globe icon"></i> Birinci Kalite</div>
+                                        }
+                                        else
+                                        {
+                                        <div class="ui label"><i class="globe icon"></i> İkinci Kalite</div>
+                                        }
+                                    @if (item.placedInBoxed)
+                                        {
+                                        <div class="ui label"><i class="globe icon"></i>Paketlenmiş</div>
+                                        }
+                                    @if (item.sera)
+                                        {
+                                        <div class="ui label"><i class="globe icon"></i>Sera</div>
+                                        }
+                                    @if (item.organik)
+                                        {
+                                        <div class="ui label"><i class="globe icon"></i>Organik Sertifikalı</div>
+                                        }
+                                    @if (item.iyitarim)
+                                        {
+                                        <div class="ui label"><i class="globe icon"></i>İyi Tarım Uygulamaları</div>
+                                        }
+                                    @ViewService.timeDifference(item.ilanTarihi) önce.
+                                    <a href="/Listings/Details/@item.Id">
+                                        <div class="ui right floated primary button">
+                                            Detaylar
+                                            <i class="right chevron icon"></i>
+                                        </div>
+                                    </a>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        }
+                </div>
+            </div>
+
+
+            <div class="ui pagination centered menu">
+                <a class="item">
+                    1
+                </a>
+                <div class="disabled item">
+                    ...
+                </div>
+                <a class="item">
+                    10
+                </a>
+                <a class="item">
+                    11
+                </a>
+                <a class="item active">
+                    12
+                </a>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+
+<script type='text/javascript'>
+    //<![CDATA[
+
+    var myArray = [];
+    @if (Model.selectedPT != null)
+    {
+        foreach (var d in Model.selectedPT)
+        {
+            @:myArray.push("@d");
+                                                                                                                }
+    }
+    var startDate = moment();
+    var endDate = moment().add(moment.duration(8, 'months'))
+
+
+
+    $(document).ready(function () {
+        $(function () {
+
+            $('#selectedPT').dropdown();
+            $("#fiyatSlider").ionRangeSlider({
+                type: "double",
+                grid: true,
+                min: -2,
+                max: 3,
+                from: @Model.fiyatMin,
+                to: @Model.fiyatMax,
+                step: 0.0001,
+                postfix: "TL",
+                prettify_enabled: true,
+                prettify: function (n) {
+                    var lg = Math.pow(4, n);
+                    var rLg = +lg.toFixed(2);
+                    return rLg;
+                }
+
+            });
+            $("#miktarSlider").ionRangeSlider({
+                type: "double",
+                grid: true,
+                min: -1,
+                max: 3,
+                from: @Model.miktarMin,
+                to: @Model.miktarMax,
+                step: 0.000001,
+                postfix: " ton",
+                prettify_enabled: true,
+                prettify: function (n) {
+                    var lg = Math.pow(10, n);
+                    if(lg<1){var rLg =lg.toFixed(3)}
+                    else if(lg<10){var rLg =lg.toFixed(2)}
+                    else if(lg<25){var rLg =lg.toFixed(1)}
+                    else{var rLg =lg.toFixed()}
+                    return rLg;
+                }
+
+            });
+            $("#minimumOrderSlider").ionRangeSlider({
+                type: "single",
+                grid: true,
+                min: -1,
+                max: 2,
+                from: @Model.minimumOrder,
+                step: 0.000001,
+                postfix: " ton",
+                prettify_enabled: true,
+                prettify: function (n) {
+                    var lg = Math.pow(10, n);
+                    if(lg<1){var rLg =lg.toFixed(3)}
+                    else if(lg<10){var rLg =lg.toFixed(2)}
+                    else if(lg<25){var rLg =lg.toFixed(1)}
+                    else{var rLg =lg.toFixed()}
+                    return rLg;
+                }
+            });
+            $("#hasatSlider").ionRangeSlider({
+                type: "double",
+                grid: true,
+                force_edges: true,
+
+                min: +moment(startDate).format("X"),
+                max: +moment(endDate).format("X"),
+
+                from: +moment(startDate).add(1, "month").format("X"),
+                to: +moment(startDate).add(6, "month").format("X"),
+                values_separator: " → ",
+                prettify: function (num) {
+                    return moment(num, "X").format("dddd, MMM Do YYYY");
+                },
+
+
+
+            });
+        });
+    });
+    function log(n,b){
+        return Math.log(n) / Math.log(b);
+    }
+
+
+    $('#selectedPT').dropdown('set selected', myArray);
+
+    $('#hasatSlider').on("change", function () {
+        var $this = $(this),
+            from = $this.data("from"),
+            to = $this.data("to");
+        console.log(moment(from, "X").format("dddd, MMM Do YYYY") + " - " + moment(to, "X").format("dddd, MMM Do YYYY"))
+    });
+
+    $('#fiyatMinInput').on("change", function () {
+
+        var slider = $("#fiyatSlider").data("ionRangeSlider");
+        slider && slider.update({
+            from: log($('#fiyatMinInput').val(),4)
+        });
+    });
+    $('#fiyatMaxInput').on("change", function () {
+        var slider = $("#fiyatSlider").data("ionRangeSlider");
+        slider && slider.update({
+            to: log($('#fiyatMaxInput').val(),4)
+        });
+    });
+    $('#miktarMinInput').on("change", function () {
+        var slider = $("#miktarSlider").data("ionRangeSlider");
+        slider && slider.update({
+            from: log($('#miktarMinInput').val(),10)
+        });
+    });
+    $('#miktarMaxInput').on("change", function () {
+        var slider = $("#miktarSlider").data("ionRangeSlider");
+        slider && slider.update({
+            to: log($('#miktarMaxInput').val(),10)
+        });
+    });
+    $('#minimumOrderInput').on("change", function () {
+        var slider = $("#minimumOrderSlider").data("ionRangeSlider");
+        slider && slider.update({
+            from: log($('#minimumOrderInput').val(),10)
+        });
+    });
+
+
+
+
+
+
+    var fiyatMin = document.getElementById("fiyatMin");
+    var fiyatMax = document.getElementById("fiyatMax");
+    var miktarMin = document.getElementById("miktarMin");
+    var miktarMax = document.getElementById("miktarMax");
+    var minimumOrder = document.getElementById("minimumOrder");
+    var hasatMin = document.getElementById("hasatMin");
+    var hasatMax = document.getElementById("hasatMax");
+
+    var filterForm = document.getElementById("filterForm");
+
+    var fiyatFilter = document.getElementById("fiyatFilter");
+    var hasatFilter = document.getElementById("hasatFilter");
+    var miktarFilter = document.getElementById("miktarFilter");
+    var minimumOrderFilter = document.getElementById("minimumOrderFilter");
+
+    var fiyatFilterLabel = document.getElementById("fiyatTriggerLabel");
+    var miktarFilterLabel = document.getElementById("miktarTriggerLabel");
+    var hasatFilterLabel = document.getElementById("hasatTriggerLabel");
+    var minimumOrderFilterLabel = document.getElementById("minimumOrderTriggerLabel");
+
+    var fiyatToggle = document.getElementById("fiyatToggle");
+    var miktarToggle = document.getElementById("miktarToggle");
+    var hasatToggle = document.getElementById("hasatToggle");
+    var minimumOrderToggle = document.getElementById("minimumOrderToggle");
+
+
+
+
+    var hasatToggleState = new Boolean(@Model.hasatToggle.ToString().ToLower());
+    var fiyatToggleState = new Boolean(@Model.fiyatToggle.ToString().ToLower());
+    var miktarToggleState = new Boolean(@Model.miktarToggle.ToString().ToLower());
+    var minimumOrderToggleState = new Boolean(@Model.minimumOrderToggle.ToString().ToLower());
+
+    var filterOffText = "Filtreleme: Kapalı";
+    var filterOnText = "Filtreleme: Aktif";
+
+    $("#fiyatTrigger").click(function () {
+        if(fiyatToggleState == true){
+            fiyatFilter.style.display = 'none';
+            fiyatToggleState = false;
+            fiyatFilterLabel.innerHTML = filterOffText;
+        }
+        else{
+            fiyatFilter.style.display = 'block';
+            fiyatToggleState = true;
+            fiyatFilterLabel.innerHTML = filterOnText;        }
+
+
+    });
+    $("#miktarTrigger").click(function () {
+
+        if(miktarToggleState == true){
+            miktarFilter.style.display = 'none';
+            miktarToggleState = false;
+            miktarFilterLabel.innerHTML = filterOffText;
+        }
+        else{
+            miktarFilter.style.display = 'block';
+            miktarToggleState = true;
+            miktarFilterLabel.innerHTML = filterOnText;        }
+
+        console.log(miktarToggleState);
+    });
+    $("#hasatTrigger").click(function () {
+        if(hasatToggleState == true){
+            hasatFilter.style.display = 'none';
+            hasatToggleState = false;
+            hasatFilterLabel.innerHTML = filterOffText;
+        }
+        else{
+            hasatFilter.style.display = 'block';
+            hasatToggleState = true;
+            hasatFilterLabel.innerHTML = filterOnText;        }
+
+
+    });
+    $("#minimumOrderTrigger").click(function () {
+        if(minimumOrderToggleState == true){
+            minimumOrderFilter.style.display = 'none';
+            minimumOrderToggleState = false;
+            minimumOrderFilterLabel.innerHTML = filterOffText;
+        }
+        else{
+            minimumOrderFilter.style.display = 'block';
+            minimumOrderToggleState = true;
+            minimumOrderFilterLabel.innerHTML = filterOnText;        }
+
+
+    });
+
+
+    $("#yolla").click(function () {
+
+
+        fiyatMin.value = Math.pow(4, $("#fiyatSlider").ionRangeSlider().data("from")).toFixed(2);
+        fiyatMax.value = Math.pow(4, $("#fiyatSlider").ionRangeSlider().data("to")).toFixed(2);
+        miktarMin.value = Math.pow(10, $("#miktarSlider").ionRangeSlider().data("from")).toFixed();
+        miktarMax.value = Math.pow(10, $("#miktarSlider").ionRangeSlider().data("to")).toFixed();
+        minimumOrder.value = Math.pow(10, $("#minimumOrderSlider").ionRangeSlider().data("from")).toFixed();
+        hasatMin.value = moment($("#hasatSlider").ionRangeSlider().data("from"), "X").format("DD.MM.YYYY");
+        hasatMax.value = moment($("#hasatSlider").ionRangeSlider().data("to"), "X").format("DD.MM.YYYY");
+
+        fiyatToggle.value = fiyatToggleState;
+        miktarToggle.value = miktarToggleState;
+        hasatToggle.value = hasatToggleState;
+        minimumOrderToggle.value = minimumOrderToggleState;
+
+
+
+        filterForm.submit();
+
+    });
+    //]]>
+
+</script>

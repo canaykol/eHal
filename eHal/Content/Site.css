@@ -1,4 +1,21 @@
-﻿body {
+﻿* {
+    padding: 0;
+    margin: 0;
+    outline: 0;
+}
+colour-palette{
+     
+    color1: #f3e1cb;
+    color2: #76ae3e;
+    color3: #f7b21e;
+    color4: #0b121e;
+    color5: #e2385d; 
+    lbackg: #f3f3e9;
+    /*background: url(); https://www.google.co.uk/search?q=papyrus+texture&sa=X&hl=en&tbm=isch&tbo=u&source=univ&ved=0ahUKEwjk_uK10oDTAhVGtxoKHSL2ClkQsAQIGQ&biw=1366&bih=648#q=grunge+paper+texture&hl=en&tbm=isch&tbs=rimg:CZzdmQvIk3LwIjgnb5xENHgJAg9tAqu3dIOG584GHccNECWc5UWc0J5DhElhlOAIcf8R1O70PRalTBPcZVtq3H4qyioSCSdvnEQ0eAkCEVmCszRGX3WfKhIJD20Cq7d0g4YRHMWlNQ_1y9LcqEgnnzgYdxw0QJRFqwnYYL6QcvCoSCZzlRZzQnkOEEcDybbkveNCvKhIJSWGU4Ahx_1xERKTYxzNqJao8qEgnU7vQ9FqVMExEykTG-BmKW6CoSCdxlW2rcfirKEez35WSmEE8x&*&imgrc=1O70PRalTBN7ZM
+*/
+}
+
+body{
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -16,9 +33,218 @@
     white-space: normal;
 }
 
+
+#fiyat{
+    margin-right: 20px;
+
+}
+.multiselect-container {
+    height: 200px;  
+    overflow-x: hidden;
+    overflow-y: scroll;  
+}
+
+nav, div{
+    display: block;
+}
+
+
+.site-info{     
+
+    width: 100%;
+    height: 115px;
+    background-color: #76ae3e;
+    box-sizing: border-box;
+    text-align: center;
+    color: #f3f3e9;
+    position: relative;
+    text-align: center;
+
+}
+
+.cantus.ui.small.basic.icon.button{
+    box-shadow: none !important;
+    float: right;
+    padding: 2px;
+    margin-right: 1px;
+    margin-top: 5px;
+}
+.meta-state{
+    display: inline-block;
+    font-size: 10px;
+    color: lightgray;
+    float: right;
+    margin-right: 2.5px;
+    margin-top: 5px;
+
+}
+h4.ui.header.canhed{
+    margin-top: 5px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.en-fazla{
+    float: right;
+    display: inline-block;
+    margin-top: 6px;
+
+
+}
+
+.en-az{
+    display: inline-block;
+    margin-top: 6px;
+}
+
+
+
+#hpstats{
+    width: 100%;
+
+    box-sizing: border-box;
+    text-align: center;
+    color: #f3f3e9;
+    position: absolute;
+    overflow: hidden;
+    display: block;
+}
+.ui.statistic>.value, .ui.statistics .statistic>.text{
+    color: #f3f3e9;
+    
+}
+
+.ui.statistic>.value, .ui.statistics .statistic>.value{
+    color: #f3f3e9;
+    
+}
+.ui.statistic>.value, .ui.statistics .statistic>.label{
+    color: #f3f3e9;
+    
+}
+
+.statistics .statistic{
+    padding-top:20px;
+
+}
+.statistics .statistic ~ .statistic {
+
+    margin-left: 60px;
+
+}
+
+
+.index-search{
+    width: 100%;
+    height: 360px;
+    display: block;
+    position: relative;
+    background: url(http://www.seratarim.net/img/Haberler/kresim/de54cb7d_yagmurlama.jpg);
+    background-size: 100% auto;
+}
+
+.index-search .index-search-section{
+    color: black; 
+    position:absolute;
+    top: 37%;
+    left: 80px;
+    padding-right: 20px; 
+}
+.index-search-section .input-group{
+    max-width:450px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
 textarea {
-    max-width: 280px;
+    max-width: 320px;
 }
+
+
+
+.seller-column img{
+    width: 160px;
+    height: 160px;
+
+}
+
+
+
+.product-banner {
+    position: relative;
+    width: 100%;
+    height: 80px;
+    overflow: hidden;
+}
+
+.product-banner img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    height: auto;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    }
+
+
+
+
+
+
+
+
+.login-section{
+
+    float:right;
+}
+
+.login-section li{
+
+    float:right;
+    padding: 3px;
+    float: left;
+}
+
+
+.login-section ul{
+
+    list-style-type: none;
+}
+
+
+.section-body{
+    overflow: hidden;
+    border: 1px solid #d1d1d1;
+    border-top: none;
+    background: #fff;
+    margin-top: 20px;
+    width: 100%;
+    display:block;
+
+}
+    
+
+
+
+big{
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+
+
+

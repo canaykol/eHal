@@ -19,13 +19,29 @@ namespace eHal
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+
+
+            bundles.Add(new ScriptBundle("~/bundles/semantic").Include(
+                      "~/Scripts/semantic.js"));
+            bundles.Add(new ScriptBundle("~/bundles/datepicker").Include(
+                      "~/Scripts/datepicker.min.js"));
+            bundles.Add(new ScriptBundle("~/bundles/rangeSlider").Include(
+                      "~/Scripts/ion.rangeSlider.js",
+                      "~/Scripts/moment.min.js"));
+
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                        "~/Content/semantic.css",
+                        "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/Content/datepicker").Include(
+                      "~/Content/datepicker.min.css"));
+
+            bundles.Add(new StyleBundle("~/Content/rangeSlider").Include(
+                      "~/Content/ion.rangeSlider.css",
+                      "~/Content/ion.rangeSlider.skinFlat.css"));
+
+
         }
     }
 }

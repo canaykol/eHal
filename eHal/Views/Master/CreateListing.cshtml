@@ -1,0 +1,166 @@
+﻿@model eHal.Models.Listing
+
+@{
+    ViewBag.Title = "CreateListing";
+}
+
+
+<div class="container">
+
+
+    <div class="ui raised segment">
+
+        <form class="ui form" method="post" id="ilanVer" name="ilanVer">
+
+            <h4 class="ui dividing header">İlan Bilgileri</h4>
+            <div class="seven wide field">
+                <label for="pTypeId">Ürün Tipi</label>
+                <select class="ui fluid search dropdown" name="pTypeId" id="pTypeId">
+                    <option value="">Ürün ismi</option>
+                    @foreach (var item in Model.pTypeList.ToList())
+                    {
+                        <option value="@item.Id">@item.ProductTypeName</option>
+                    }
+
+
+                </select>
+            </div>
+            <div class="fields">
+                <div class="seven wide field">
+                    <label for="birimFiyat">Fiyat</label>
+                    <input type="text" id="birimFiyat" name="birimFiyat" placeholder="TL, kg başına">
+                </div>
+
+                <div class="five wide field">
+                    <label for="miktar">Miktar</label>
+                    <input type="text" id="miktar" name="miktar" placeholder="kg cinsinden">
+
+                </div>
+                <div class="four wide field">
+                    <label>Toplam</label>
+
+                </div>
+            </div>
+
+            <div class="fields">
+                <div class="seven wide field">
+                    <label for="weekId">Hasat tarihi</label>
+                    <select class="ui fluid search dropdown" name="weekId" id="weekId">
+                        <option value="">Aşağıdaki haftalardan seçiniz</option>
+                        @foreach (var item in Model.availableWeeks.ToList())
+                        {
+                            <option value="@item.Id">@item.Tag</option>
+                        }
+
+
+                    </select>
+                </div>
+                <div class="five wide field">
+                    <div class="ui checkbox">
+
+                        <input type="checkbox" id="kalite" name="kalite" value="true">
+                        <label for="kalite">I. Kalite</label>
+                    </div>
+
+
+                </div>
+                <div class="four wide field">
+                    <div class="ui checkbox">
+
+                        <input type="checkbox" id="sera" name="sera" value="true">
+                        <label for="sera">Sera Ürünü</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fields">
+                <div class="seven wide field">
+                    <div class="ui checkbox">
+
+                        <input type="checkbox" id="malinTamami" name="malinTamami" value="true">
+                        <label for="malinTamami">Malın tamamı satılık</label>
+                    </div>
+
+                </div>
+                <div class="five wide field">
+                    <label for="minimumOrder">Minimum Sipariş Tutarı</label>
+                    <input type="text" id="minimumOrder" name="minimumOrder" placeholder="kg cinsinden">
+
+
+                </div>
+
+
+                <div class="four wide field">
+                    <div class="ui checkbox">
+
+                        <input type="checkbox" id="placedInBoxed" name="placedInBoxed" value="true">
+                        <label for="placedInBoxed">Kutulara Yerleştirilmiş</label>
+                    </div>
+                </div>
+            </div>
+
+            <input class="ui button" id="send" value="İlanı Yayınla" type="button" tabindex="0">
+        </form>
+
+    </div>
+
+</div>
+
+
+<script type='text/javascript'>
+    //<![CDATA[
+
+
+    var send = document.getElementById("send");
+    var form = document.getElementById("ilanVer");
+
+    send.onclick = function () {
+
+        var miktar = document.getElementById("miktar");
+        var birimFiyat = document.getElementById("birimFiyat");
+        var hasat = document.getElementById("hasat");
+        var malinTamami = document.getElementById("malinTamami");
+        var minimumOrder = document.getElementById("minimumOrder");
+
+
+
+        if(miktar<=100){
+            alert("Girdiğiniz ilanın miktarı 100 kilogramı aşmalı.");
+        }
+
+        else if (birimFiyat <= 0) {
+            alert("Girdiğiniz ilanın fiyatı geçerli olmalı.");
+        }
+
+
+        else if (malinTamami == false && minimumOrder <= 0) {
+            alert("Minimum sipariş miktarı geçerli bir miktar olmalı");
+        }
+
+        else {
+            form.submit();
+        }
+
+
+
+
+
+    };
+
+
+
+    $(document).ready(function () {
+        $(function () {
+            $('#pTypeId').dropdown();
+            $('[data-toggle="datepicker"]').datepicker();
+        });
+    });
+
+
+    //]]>
+
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

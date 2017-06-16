@@ -1,0 +1,125 @@
+﻿@model eHal.Models.Listing
+@using eHal.Service
+
+@{
+    ViewBag.Title = "Title of the page";
+}
+
+
+@if (Model.pType != null || Model.pType.TypeHeaderImage != null)
+{
+    <div class="product-banner">
+        <img src="@Url.Content(Model.pType.TypeHeaderImage)" />
+    </div>
+}
+
+<div class="ui basic segment">
+    <div class="ui stackable grid">
+        <br />
+        <h1 class="ui right floated header">@Html.DisplayFor(model => model.pType.ProductTypeName)</h1>
+
+        <div class="row">
+
+            <div class="ten wide column">
+                <div class="ui main text container">
+                    <div class="ui raised segment">
+                        <div class="ui items">
+                            <div class="item">
+                                <div class="content">
+
+                                    <div class="description">
+                                        <table class="ui very basic table">
+                                            <tbody>
+                                                <tr>
+                                                    <td><b>Miktar:</b></td>
+                                                    <td>@Html.DisplayFor(model => model.Miktar) kg</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Birim Fiyat:</b></td>
+                                                    <td>@Html.DisplayFor(model => model.birimFiyat) TL/kg</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Minimum Sipariş Miktarı:</b></td>
+
+                                                    @if (Model.malinTamami)
+                                                {
+                                                <td>Bu ilanda belirtilen tüm miktardan düşük sipariş kabul edilmez. </td>
+
+                                                }
+                                                else
+                                                {
+                                                <td>Bu ilan bir defada en az @Model.minimumOrder kg siparişleri kabul etmektedir.</td>
+                                                }
+
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Hasat Zamanı:</b></td>
+                                                    <td>@Html.DisplayFor(model => model.hasatZamani.Tag)</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b>İlan Tarihi:</b></td>
+                                                    <td>@Html.DisplayFor(model => model.ilanTarihi)</td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    <div class="extra">
+                                        <i class="green check icon"></i>
+                                        @Html.DisplayFor(model => model.PageViews) defa görüntülendi.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="six wide column">
+                <div class="ui link cards">
+                    <div class="card">
+                        <div class="image">
+                            <img src="~/Content/default-avatar.jpg">
+                        </div>
+                        <div class="content">
+                            <a href="/Sellers/Details/@Model.ilanSahibi.Id"><div class="header">@Html.DisplayFor(model => model.ilanSahibi.Name)</div></a>
+                            <div class="meta">
+                                <a>Buraya da bir şeyler yazılabilir</a>
+                            </div>
+                            <div class="description">
+                                @if (!String.IsNullOrEmpty(Model.ilanSahibi.Telefon))
+                            {
+                            <p><b>Telefon:</b> @Html.DisplayFor(model => model.ilanSahibi.Telefon)</p>
+                            }
+                                @if (!String.IsNullOrEmpty(Model.ilanSahibi.acikAdres))
+                            {
+                            <p><b>Adres:</b> @Html.DisplayFor(model => model.ilanSahibi.acikAdres)</p>
+                            }
+                                @if (!String.IsNullOrEmpty(Model.ilanSahibi.WebAdress))
+                            {
+                            <p><b>İnternet adresi:</b> @Html.DisplayFor(model => model.ilanSahibi.WebAdress)</p>
+                            }
+                            </div>
+                        </div>
+                        <div class="extra content">
+                            <span class="right floated">
+                                Joined @ViewService.timeDifference(Model.ilanSahibi.joinDate) ago.
+                            </span>
+                            <span>
+                                <i class="user icon"></i>
+                                @Model.ilanSahibi.ilanlar.Count adet ilanı var.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>

@@ -1,0 +1,104 @@
+﻿@model eHal.Models.EditSellerViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+<h2>Üretici Profili Oluşturun!</h2>
+
+<div class="container">
+    <div class="ui raised segment">
+
+        <form class="ui form" method="post" id="createSeller" name="createSeller">
+
+            <h4 class="ui dividing header">Üretici Bilgileri</h4>
+            
+                <div class="fields">
+                    <div class="seven wide field">
+                        <label for="Name">Ticari Tam İsim</label>
+                        <input type="text" id="tradeName" name="tradeName" placeholder="Gerçek veya Tüzel İsim">
+                    </div>
+                </div>
+
+                <div class="fields">
+                    <div class="five wide field">
+                        <label for="BirthDate">Doğum Günü</label>
+                        <input type="text" id="birthDate" name="birthDate" placeholder="Gün.Ay.Yıl">
+                    </div>
+
+                    <div class="five wide field">
+                        <label for="telefon">Telefon</label>
+                        <input type="text" id="telefon" name="telefon" placeholder="05xxxxxxxxx">
+
+                    </div>
+                    <div class="four wide field">
+                        <label for="webAdress">Web Adresi</label>
+                        <input type="text" id="webAddress" name="webAddress" placeholder="www.xxxx.com">
+                    </div>
+                </div>
+
+                <div class="fields">
+                    <div class="seven wide field">
+                        <label for="geziKabul">Üretim Tesisim Gezilebilir</label>
+                        <input type="checkbox" id="geziKabul" name="geziKabul" value="true" />
+                    </div>
+                    <div class="seven wide field">
+                        <label for="numune">Numune Gönderebilirim</label>
+                        <input type="checkbox" id="numune" name="numune" value="true" />
+                    </div>
+                </div>
+
+
+                <input class="ui button" id="send" value="Üretici Oluştur" type="button" tabindex="0">
+        </form>
+
+    </div>
+
+</div>
+
+
+<script type='text/javascript'>
+    //<![CDATA[
+
+
+    var send = document.getElementById("send");
+    var form = document.getElementById("createSeller");
+    var tradeName = document.getElementById("tradeName");
+    var birthDate = document.getElementById("birthDate");
+    var telefon = document.getElementById("telefon");
+    var webAddress = document.getElementById("webAdress");
+    var numune = document.getElementById("numune");
+    var geziKabul = document.getElementById("geziKabul");
+
+    $(document).ready(function () {
+        $(function () {
+
+            
+        });
+    });
+
+    send.onclick = function () {
+
+
+        //kontroller buraya
+
+        if(tradeName.value == ""){
+            alert("Ticari isminizi boş bırakamazsınız.");
+        }
+
+        else if (birthDate == "") {
+            alert("Doğum gününüzü boş bırakamazsınız.");
+        }
+
+        else {
+            form.submit();
+        }
+        
+    };
+
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
